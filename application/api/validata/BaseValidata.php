@@ -10,10 +10,11 @@ use think\Validate;
 class BaseValidata extends Validate {
     public function goCheck() {
         $params = Request::instance()->param();
-        $result = $this->check($params);
+        $result = $this->batch()->check($params);
         if (!$result) {
-            $e      = new ParameterException();
-            $e->msg = $this->error;
+            $e = new ParameterException([
+                'msg' => $this->error,
+            ]);
             throw $e;
         } else {
             return true;
