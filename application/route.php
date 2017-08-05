@@ -2,4 +2,4 @@
 
 use think\Route;
 
-Route::get('hello', 'sample/Test/test');
+Route::get(':version/banner/:id', 'api/:version.Banner/getBanner');
