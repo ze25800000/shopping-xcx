@@ -5,6 +5,7 @@ namespace app\lib\exception;
 
 use Exception;
 use think\exception\Handle;
+use think\Log;
 use think\Request;
 
 class ExceptionHandler extends Handle {
@@ -21,6 +22,7 @@ class ExceptionHandler extends Handle {
             $this->code      = 500;
             $this->msg       = "服务器内部错误";
             $this->errorCode = 999;
+            $this->recordErrorLog($e);
         }
         $request = Request::instance();
         $url     = $request->url();
@@ -30,5 +32,17 @@ class ExceptionHandler extends Handle {
             'request_url' => $url,
         ];
         return json($result, $this->code);
+    }
+
+    private function recordErrorLog(Exception $e) {
+        Log::init([
+            // 日志记录方式，内置 file socket 支持扩展
+            'type'  => 'File',
+            // 日志保存目录
+            'path'  => LOG_PATH,
+            // 日志记录级别
+            'level' => ['error']
+        ]);
+        Log::record($e->getMessage(), 'error');
     }
 }
