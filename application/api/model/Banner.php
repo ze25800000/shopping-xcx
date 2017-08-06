@@ -3,13 +3,15 @@
 namespace app\api\model;
 
 
-class Banner {
-    static public function getBannerByID() {
-        try {
-            1/0;
-        } catch (Exception $ex) {
+use think\Db;
 
-        }
-        return null;
+class Banner {
+    public static function getBannerByID($id) {
+        $result = Db::table('banner_item')
+            ->where(function ($query) use ($id) {
+                $query->where('banner_id', '=', $id);
+            })
+            ->select();
+        return json($result);
     }
 }
