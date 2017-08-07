@@ -4,8 +4,9 @@ namespace app\api\model;
 
 
 class BannerItem extends BaseModel {
-    public $hidden = ['delete_time','banner_id','update_time','img_id'];
+    public $hidden = ['delete_time', 'banner_id', 'update_time', 'img_id', 'id'];
+
     public function img() {
-        return $this->hasOne('Image', 'id', 'img_id');
+        return $this->belongsTo('Image', 'img_id', 'id');
     }
 }
