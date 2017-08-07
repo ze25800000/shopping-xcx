@@ -10,8 +10,7 @@ use app\lib\exception\BannerMissException;
 class Banner {
     public function getBanner($id) {
         (new IDMustBePostiveInt())->goCheck();
-        $result = BannerModel::get($id);
-//        $result = BannerModel::getBannerByID($id);
+        $result = BannerModel::getBannerByID($id);
         if (!$result) {
             throw new BannerMissException();
         }
