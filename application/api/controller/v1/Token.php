@@ -9,7 +9,10 @@ use app\api\validata\TokenGet;
 class Token {
     public function getToken($code = '') {
         (new TokenGet())->goCheck();
-        $ut     = new UserToken($code);
-        $result = $ut->get();
+        $ut    = new UserToken($code);
+        $token = $ut->get();
+        return [
+            'token' => $token
+        ];
     }
 }
