@@ -28,4 +28,12 @@ class BaseValidata extends Validate {
             return false;
         }
     }
+
+    protected function isNotEmpty($value) {
+        if (empty($value)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
