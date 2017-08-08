@@ -20,4 +20,26 @@ class Product extends BaseModel {
         return self::where('category_id', '=', $id)
             ->select();
     }
+
+    public function imgs() {
+        return $this->hasMany('ProductImage', 'product_id', 'id');
+    }
+
+    public function properties() {
+        return $this->hasMany('ProductProperty', 'product_id', 'id');
+    }
+
+    public static function getProductDetail($id) {
+//        return self::with(['imgs.imgUrl', 'properties'])
+//            ->find($id);
+        $product = self::with([
+            'imgs' => function ($query) {
+                $query->with(['imgUrl'])
+                    ->order('order', 'asc');
+            }
+        ])
+            ->with(['properties'])
+            ->find($id);
+        return $product;
+    }
 }
