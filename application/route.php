@@ -18,3 +18,5 @@ Route::get(':version/category/all', 'api/:version.Category/getAllCategories');
 Route::post(':version/token/user', 'api/:version.Token/getToken');
 
 Route::post(':version/address', 'api/:version.Address/createOrUpdateAddress');
+
+Route::post('api/:version/order', 'api/:version.Order/placeOrder');
