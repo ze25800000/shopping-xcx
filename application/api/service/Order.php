@@ -4,6 +4,7 @@ namespace app\api\service;
 
 
 use app\api\model\Product;
+use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
 
 class Order {
@@ -16,6 +17,38 @@ class Order {
         $this->products  = $this->getProductByOrder($oProducts);
         $this->uid       = $uid;
         $status          = $this->getOrderStatus();
+        if (!$status) {
+            $status['order_id'] = -1;
+            return $status;
+        }
+        $orderSnap = $this->snapOrder($status);
+    }
+
+    private function snapOrder($status) {
+        $snap                = [
+            'orderPrice'  => 0,
+            'totalCount'  => 0,
+            'pStatus'     => [],
+            'snapAddress' => null,
+            'snapName'    => '',
+            'snapImg'     => ''
+        ];
+        $snap['orderPrice']  = $status['orderPrice'];
+        $snap['totalCount']  = $status['totalCount'];
+        $snap['pStatus']     = $status['pStatusArray'];
+        $snap['snapAddress'] = json_encode($this->getUserAddress());
+        $snap['snapName']    = $this->products[0]['name'];
+        $snap['snapImg']     = $this->products[0]['main_img_url'];
+        if (count($this->products) > 1) {
+            $snap['snapName'] .= '等';
+        }
+        return $snap;
+    }
+
+    private function getUserAddress() {
+        $userAddress = UserAddress::where('user_id', '=', $this->uid)
+            ->find();
+        return $userAddress->toArray();
     }
 
     private function getOrderStatus() {
