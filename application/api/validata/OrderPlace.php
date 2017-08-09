@@ -11,8 +11,8 @@ class OrderPlace extends BaseValidata {
         'products' => 'checkProducts'
     ];
     protected $singleRule = [
-        'product_id' => 'require|isNotEmpty',
-        'count'      => 'require|isNotEmpty'
+        'product_id' => 'require|isPositiveInteger',
+        'count'      => 'require|isPositiveInteger'
     ];
 
     protected function checkProducts($values) {
@@ -33,7 +33,7 @@ class OrderPlace extends BaseValidata {
     }
 
     protected function checkProduct($value) {
-        $validate = new Validate($this->singleRule);
+        $validate = new BaseValidata($this->singleRule);
         $result   = $validate->check($value);
         if (!$result) {
             throw new ParameterException([
