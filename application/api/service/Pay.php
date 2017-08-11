@@ -15,4 +15,9 @@ class Pay {
         }
         $this->orderID = $orderID;
     }
+
+    public function pay() {
+        $orderService = new Order();
+        $status       = $orderService->checkOrderStock($this->orderID);
+    }
 }
