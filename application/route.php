@@ -20,6 +20,7 @@ Route::post(':version/token/user', 'api/:version.Token/getToken');
 Route::post(':version/address', 'api/:version.Address/createOrUpdateAddress');
 
 Route::post(':version/order', 'api/:version.Order/placeOrder');
+Route::get(':version/order/:id', 'api/:version.Order/getDetail', [], ['id' => '\d+']);
 Route::get(':version/order/by_user', 'api/:version.Order/getSummaryByUser');
 
 Route::post(':version/pay/pre_order', 'api/:version.Pay/getPreOrder');

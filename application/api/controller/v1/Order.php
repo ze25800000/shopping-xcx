@@ -4,16 +4,18 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
+use app\api\validata\IDMustBePostiveInt;
 use app\api\validata\OrderPlace;
 use app\api\service\Token as TokenService;
 use app\api\service\Order as OrderService;
 use app\api\model\Order as OrderModel;
 use app\api\validata\PagingParameter;
+use app\lib\exception\OrderException;
 
 class Order extends BaseController {
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'placeOrder'],
-        'checkPrimaryScope'   => ['only' => 'getSummaryByUser']
+        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser']
     ];
 
     public function getSummaryByUser($page = 1, $size = 15) {
@@ -41,5 +43,14 @@ class Order extends BaseController {
         $order     = new OrderService();
         $status    = $order->place($oProducts, $uid);
         return $status;
+    }
+
+    public function getDetail($id) {
+        (new IDMustBePostiveInt())->goCheck();
+        $orderDetail = OrderModel::get($id);
+        if (!$orderDetail) {
+            throw new OrderException();
+        }
+        return $orderDetail->hidden(['prepay_id']);
     }
 }
