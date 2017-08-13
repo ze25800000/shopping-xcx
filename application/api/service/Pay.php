@@ -61,6 +61,23 @@ class Pay {
         return $signature;
     }
 
+    private function sign($wxOrder) {
+        $jsApiPayData = new \WxPayJsApiPay();
+        $jsApiPayData->SetAppid(config('wx.app_id'));
+        //必须是string类型
+        $jsApiPayData->SetTimeStamp((string)time());
+        $rand = md5(time() . mt_rand(0, 1000));
+        $jsApiPayData->SetNonceStr($rand);
+        $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
+        $jsApiPayData->SetSignType('md5');
+        $sign      = $jsApiPayData->MakeSign();
+        $rawValues = $jsApiPayData->GetValues();
+        $rawValues['paySign'] = $sign;
+        unset($rawValues['appId']);
+
+        return $rawValues;
+    }
+
     private function recordPreOrder($wxOrder) {
         OrderModel::where('id', '=', $this->orderID)
             ->update(['prepay_id' => $wxOrder['prepay_id']]);
