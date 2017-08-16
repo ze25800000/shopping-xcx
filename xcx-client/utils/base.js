@@ -7,6 +7,7 @@ class Base {
 
     request(params) {
         var url = this.baseRequestUrl + params.url;
+        console.log(url);
         wx.request({
             url: url,
             data: params.data,

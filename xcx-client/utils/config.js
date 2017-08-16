@@ -4,5 +4,5 @@ class config {
 
 }
 
-config.restUrl = 'http://xcxl.cn/v1';
+config.restUrl = 'http://xcxl.cn/v1/';
 export {config};

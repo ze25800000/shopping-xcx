@@ -8,8 +8,8 @@ Page({
         this._loadData();
     },
     _loadData() {
-        var id   = 1;
-        var data = home.getBannerData(id, (data) => {
+        var id = 1;
+        home.getBannerData(id, (data) => {
             console.log(data);
         });
     }
